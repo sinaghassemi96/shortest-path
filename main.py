@@ -2,8 +2,8 @@ import Graph
 import os
 
 filename = os.getcwd() + '\\network.csv'
-src_node = 723
-sink_node = 6856
+src_node = 68
+sink_node = 6575
 num_vehicles = 8000
 capacity_increment = 1000
 link_capacity = 4000
@@ -29,10 +29,10 @@ def main():
     # g.dijkstra(src=src_node)
     # g.incremental_assignment(demand=num_vehicles, increment=capacity_increment)
     # g.draw_graph(filename='network', pos=pos)
-    shortest_path, cost_to_destination = g.get_solution_to_destination(sink_node)
-    if shortest_path is not None:
-        print(f"Shortest path to destination {sink_node}: {shortest_path}")
-        print(f"Cost to destination: {cost_to_destination}")
+    # shortest_path, cost_to_destination = g.get_solution_to_destination(sink_node)
+    # if shortest_path is not None:
+    #     print(f"Shortest path to destination {sink_node}: {shortest_path}")
+    #     print(f"Cost to destination: {cost_to_destination}")
     g.incremental_assignment(num_vehicles, capacity_increment)
 
 

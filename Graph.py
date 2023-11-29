@@ -12,7 +12,7 @@ matplotlib.use('TkAgg')
 def impact_function(initial_travel_time, ratio_volume_capacity):
     # Example impact function: Multiply initial travel time by a function of the ratio of volume over capacity
     # return initial_travel_time * (1 + ratio_volume_capacity ** 2)
-    return initial_travel_time * (1 + 0.3 * ratio_volume_capacity ** 2)
+    return initial_travel_time * (1 + .3 * ratio_volume_capacity ** 2)
 
 
 def min_distance(dist, spt_set):
@@ -100,7 +100,8 @@ class Graph:
     #     return dist, path
 
     def dijkstra(self, src):
-        V = len(self.graph.nodes)
+        # V = len(self.graph.nodes)
+        V = 1373461
         dist = [float('inf')] * V
         dist[src] = 0
         path = [-1] * V
@@ -122,8 +123,8 @@ class Graph:
                     path[v] = u
                     heapq.heappush(priority_queue, (int(dist[v]), v))
 
-        print("Length of dist:", len(dist))  # Debugging line
-        print("Length of path:", len(path))  # Debugging line
+        # print("Length of dist:", len(dist))  # Debugging line
+        # print("Length of path:", len(path))  # Debugging line
 
         return dist, path
 
@@ -193,8 +194,11 @@ class Graph:
         return shortest_path, cost_to_destination
 
     def incremental_assignment(self, demand, increment, use_congested_links=False):
-        src_node = 0  # Source node
-        dest_node = self.sink_node
+
+        node_labels_to_indices = {label: i for i, label in enumerate(self.get_vertices())}
+
+        src_node = node_labels_to_indices[self.src]  # Source node
+        dest_node = node_labels_to_indices[self.sink_node]
         dist, path = self.dijkstra(src_node)
         cost_to_destination = dist[dest_node]
         if self.sink_node is None:
@@ -233,14 +237,14 @@ class Graph:
                 # Calculate the new shortest path and its cost
                 dist, path = self.dijkstra(src_node)
                 min_index = dist.index(min(dist))
-                shortest_path = construct_path(path, src_node, dest_node)
+                # Convert node indices back to labels for printing while preserving the order
+                shortest_path_labels = [node_labels_to_indices[index] for index in shortest_path]
 
-                # Print the outcome path and cost
-                print(f"Step {step}: Shortest path at this step: {shortest_path}")
+                print(f"Step {step}: Shortest path at this step: {' -> '.join(map(str, shortest_path_labels))}")
                 print(f"Cost to destination at this step: {cost_to_destination}")
 
                 # Draw the graph with the updated travel times
-                self.draw_graph(pos=self.pos)
+                # self.draw_graph(pos=self.pos)
 
                 # Increment the number of vehicles
                 cost_to_destination = dist[dest_node]
